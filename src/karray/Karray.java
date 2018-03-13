@@ -13,6 +13,7 @@ public class Karray {
 	}
 	
 	
+	
 	public static void tlowArray(){
 		LowArray lowArray = new LowArray(100);
 		lowArray.setElem(0, 11);

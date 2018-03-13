@@ -2,30 +2,49 @@ package ksimplesort;
 
 import javax.sound.midi.Soundbank;
 
+
 public class SimpleSort {
 	
 	public static void main(String[] args) {
 		System.out.println("start simple sort");
 		//tbubsort();
-		tselectsort();
+		//tselectsort();
+		//tinsertsort();
+		tobjectsort();
+	}
+
+	public static void tobjectsort(){
+		ClassArray classArray = new ClassArray(100);
+		classArray.insert("aim", "as", 11);
+		classArray.insert("tom", "ca", 12);
+		classArray.insert("sim", "ba", 13);
+		classArray.insert("aim2", "td", 14);
+		classArray.insert("kim", "ka", 15);
+		classArray.insert("dd","a1", 31);
+		classArray.display();
+		classArray.insertSort();
+		classArray.display();
+	}
+	
+	public static void tinsertsort() {
+		ArrayBub arrayBub = getArrayBub();
+		arrayBub.insertSort();
+		arrayBub.display();
 	}
 	
 	public static void tselectsort() {
-		ArrayBub arrayBub = new ArrayBub(1000);
-		arrayBub.insert(1312);
-		arrayBub.insert(13);
-		arrayBub.insert(8);
-		arrayBub.insert(5);
-		arrayBub.insert(4);
-		arrayBub.insert(32);
-		arrayBub.insert(12);
-		arrayBub.insert(11);
-		arrayBub.display();
+		ArrayBub arrayBub = getArrayBub();
 		arrayBub.bubsort();
 		arrayBub.display();
 	}
 	
 	public static void tbubsort() {
+		ArrayBub arrayBub = getArrayBub();
+		arrayBub.bubsort();
+		arrayBub.display();
+	}
+	
+	public static ArrayBub getArrayBub() {
 		ArrayBub arrayBub = new ArrayBub(1000);
 		arrayBub.insert(1312);
 		arrayBub.insert(13);
@@ -36,10 +55,8 @@ public class SimpleSort {
 		arrayBub.insert(12);
 		arrayBub.insert(11);
 		arrayBub.display();
-		arrayBub.bubsort();
-		arrayBub.display();
+		return arrayBub;
 	}
-
 }
 
 
@@ -110,8 +127,27 @@ class ArrayBub{
 					}
 				}
 				swap(min, i);//swap
+			}	
+		}
+		
+		/*
+		 * 
+		 * 插入排序
+		 * 		1 稳定排序
+		 *      2 N*N
+		 *
+		 */
+		public void insertSort(){
+			int i,j;
+			for(i=1; i < size; i++){
+				long temp = arr[i];
+				j = i;
+				while(j > 0 && arr[j-1] > temp){
+					arr[j] = arr[j-1];
+					j--;
+				}
+				arr[j] = temp;
 			}
-			
 		}
 		
 		private void swap(int one, int two){
@@ -119,6 +155,99 @@ class ArrayBub{
 			arr[one] = arr[two];
 			arr[two] = tmp;
 		}
-		
+}
+
+
+class ClassArray{
+	private Person[] arr;
+	private int used;
 	
+	public ClassArray(int max){
+		arr = new Person[max];
+		used = 0;
+	}
+	
+	
+	public Person find(String lname){
+		int j;
+		for(j=0; j < used; j++){
+			if(arr[j].getLastName().equals(lname)) break;
+		}
+		if (j == used){
+			return null;
+		}else{
+			return arr[j];
+		}
+	}
+	
+	public void insert(String l, String f, int age) {
+		arr[used] = new Person(l, f, age);
+		used++;
+	}
+	
+	public void insertSort(){
+		int i,j;
+		for(i=1; i < used; i++){
+			Person temp = arr[i];
+			j = i;
+			while(j > 0 && arr[j-1].getLastName().compareTo(temp.getLastName()) > 0){
+				arr[j] = arr[j-1];
+				j--;
+			}
+			arr[j] = temp;
+		}
+	}
+	
+	public boolean delete(String name) {
+		int j;
+		for(j=0; j<used; j++){
+			if(arr[j].getLastName().equals(name)) break;
+		}
+		if(j == used){
+			return true;
+		}else{
+			for(int k=j; k < used; k++){
+				arr[k] = arr[k+1];
+			}
+			used--;
+			return true;
+		}
+		
+		
+	}
+	
+	
+	public void display() {
+		System.out.println("###########");
+		for(int i=0; i < used; i++){
+			arr[i].displayPerson();
+		}
+		System.out.println("###########");
+	}
+	
+}
+
+
+
+class Person{
+	private String firstName;
+	private String lastName;
+	
+	private int age;
+	
+	public  Person(String l, String f, int a) {
+		firstName = f;
+		lastName = l;
+		age = a;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public void displayPerson() {
+		System.out.print(" last name:"+lastName);
+		System.out.print(",first name:"+firstName);
+		System.out.println(", age:"+age);
+	}
 }
