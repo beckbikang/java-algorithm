@@ -1,10 +1,30 @@
 package kstackqueue;
 
+import com.oracle.xmlns.internal.webservices.jaxws_databinding.SoapBindingUse;
+
 public class SimpleStackQueue {
 
 	public static void main(String args[]) {
 		//tstack();
-		tqueue();
+		//tqueue();
+		tqueue2();
+	}
+	public static void tqueue2() {
+		Queue queueS = new Queue(5);
+		queueS.insert(1);
+		queueS.insert(2);
+		queueS.insert(3);
+		queueS.insert(4);
+		queueS.insert(5);
+		queueS.insert(6);
+		System.out.println("size="+queueS.size());
+		while (!queueS.isEmpty()) {
+			long val = queueS.remove();
+			System.out.print(val);
+			System.out.println(" ");
+		}
+		System.out.println("size="+queueS.size());
+		
 	}
 	
 	public static void tqueue() {
@@ -75,7 +95,6 @@ class StackX{
 	}
 }
 
-
 class QueueS{
 	
 	private int max;
@@ -138,10 +157,18 @@ class QueueS{
 
 
 /**
- * 1 简单的方式在queue里面存一个size，通过size判断队列大小
- * 2 可以通过其他方式处理，提高性能，关键在于区分满和空
- * @author kang
- *
+ * front 指向当前有数据的待取出数据的位置。
+ * rear 指向当前为数据的待插入的数据
+ * 
+ * 实际上rear代表的就是始终未利用存储数据的那个空间。
+ * 分配size的空间实际使用了size-1条数据
+ * 
+ *  empty 如果rear和front都指向那个空的空间，代表就是空
+ *  如果rear的下一个数据就是front代表队列已满
+ * 
+ * 
+ * 
+ * 满了就不插入的队列
  */
 
 class Queue{
@@ -153,7 +180,7 @@ class Queue{
 	private int rear;
 	
 	/**
-	 * 多一行数据，区分空和满
+	 * 多一条数据,实际存储数据为s
 	 * 
 	 * @param s
 	 */
@@ -161,23 +188,26 @@ class Queue{
 		max = s + 1;
 		queArr = new long[max];
 		front = 0;
-		rear = -1;
+		rear = 0;
 	}
 	
-	//插入
-	public void insert(long j){
-		if(rear == max -1){//最后一个元素
-			rear = -1;
+	//尾部插入,插入
+	public boolean insert(long j){
+		//如果已经满了，不允许插入
+		if(isFull()) {
+			System.out.println("queue is full");
+			return false;
 		}
-		queArr[++rear] = j;
+		
+		queArr[rear] = j;
+		rear = (rear+1)%max;
+		return true;
 	}
 	
-	//移除
+	//移除, front 始终是非负数
 	public long remove(){
-		long temp = queArr[front++];
-		if(front == max){
-			front = 0;
-		}
+		long temp = queArr[front];
+		front = (front+1)%max;
 		return temp;
 	}
 	
@@ -185,32 +215,21 @@ class Queue{
 		return queArr[front];
 	}
 	
+	//相等即为空，因为满了不再让放入数据
 	public boolean isEmpty(){
-		//相隔一个
-		//两种情况 1 front > rear 比如 1，0
-		// 2 front < rear。 比如 0, 
-		return (rear+1 == front) ||
-				((front +max-1)%(max-1) == rear);
+		return rear == front;
 	}
 	
+	//
 	public boolean isFull(){
-		return (rear+2 == front) ||
-		(front+max-2 == rear);
+		return (rear+1)%max == front;
 	}
 	
 	public int size(){
-		if(rear >= front){//尾部较大
-			return rear-front+1;
-		}else{//
-			return ((max-front) +(rear+1))%(max-1);
-		}
+		return (rear-front+max)%max;
 	}
 	
-	
-	
-	
 }
-
 
 
 
