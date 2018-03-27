@@ -7,7 +7,8 @@ public class SimpleStackQueue {
 	public static void main(String args[]) {
 		//tstack();
 		//tqueue();
-		tqueue2();
+		//tqueue2();
+		tQqueue();
 	}
 	public static void tqueue2() {
 		Queue queueS = new Queue(5);
@@ -57,10 +58,76 @@ public class SimpleStackQueue {
 			System.out.println(" ");
 		}
 		System.out.println("");
-		
-		
 	}
+	
+	//test stack
+	public static void tQqueue() {
+		PriorityQ priorityQ = new PriorityQ(1000);
+		priorityQ.insert(1);
+		priorityQ.insert(10);
+		priorityQ.insert(100);
+		priorityQ.insert(1000);
+		
+		while (!priorityQ.isEmpty()) {
+			long val = priorityQ.remove();
+			System.out.print(val);
+			System.out.println(" ");
+		}
+		System.out.println("");
+	}
+	
+	
 }
+
+//优先级队列
+class PriorityQ{
+	private int max;
+	private long[] queueArray;
+	private int nums;
+	public PriorityQ(int s) {
+		max = s;
+		queueArray = new long[max];
+		nums = 0;
+	}
+	
+	public void insert(long item){
+		int i;
+		if(nums == 0){
+			queueArray[nums++] = item;
+		}else{
+			
+			for(i=nums-1; i >=0 ;--i){
+				if(item > queueArray[i]){
+					queueArray[i+1] = queueArray[i];
+				}else{
+					break;
+				}
+			}
+			queueArray[i+1] = item;
+			nums++;
+		}
+	}
+	
+	public long remove(){
+		return queueArray[--nums];
+	}
+	
+	public long peekMin(){
+		return queueArray[nums-1];
+	}
+	
+	public boolean isEmpty(){
+		return nums == 0;
+	}
+	
+	public boolean isFull(){
+		return nums == max;
+	}
+	
+	
+	
+}
+
 
 class StackX{
 	
