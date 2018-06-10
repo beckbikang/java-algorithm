@@ -22,6 +22,69 @@ public class SimpleLink {
     }
 }
 
+/**
+ * 双端链表
+ */
+class CycleLink{
+    private Link first;
+    private Link last;
+
+    public CycleLink(){
+        first = null;
+        last = null;
+    }
+    public boolean isEmpty(){
+        return first == null;
+    }
+
+    public void insertFirst(int i,double d){
+        Link link = new Link(i, d);
+        if(isEmpty()){
+            last = link;
+        }
+        link.next = first;
+        first = link;
+    }
+
+    public void insertLast(int i,double d){
+        Link link = new Link(i, d);
+        if(isEmpty()){
+            first = link;
+        }else{
+            last.next = link;
+        }
+        last = link;
+
+    }
+
+    public Link deleteFirst(){
+        if(isEmpty()){
+            return null;
+        }
+        Link tmp = first;
+        if(first.next == null){
+            last = null;
+        }
+        first = first.next;
+
+        return tmp;
+    }
+
+    public void showList(){
+        System.out.println("show list");
+        Link cur = first;
+        while (cur != null){
+            cur.showLink();
+            cur = cur.next;
+        }
+
+        System.out.println("");
+    }
+
+}
+
+
+
 class Link{
     public int i1;
     public double d1;
