@@ -174,7 +174,7 @@ class OrderArray{
 			if(arr[middle] == searchVal) {
 				return middle;
 			}else if(left > right){
-				return used;
+				return -1;
 			}else{
 				if(arr[middle] < searchVal){
 					left = middle+1;

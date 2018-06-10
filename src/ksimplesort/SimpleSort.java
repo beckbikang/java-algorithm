@@ -1,17 +1,42 @@
 package ksimplesort;
 
 import javax.sound.midi.Soundbank;
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SimpleSort {
+
+
+	public static final String FORMAT_FLOAT_STR = ",###,##0.00";
 	
 	public static void main(String[] args) {
 		System.out.println("start simple sort");
 		//tbubsort();
 		//tselectsort();
 		//tinsertsort();
-		tobjectsort();
+		//tobjectsort();
+		tformat();
 	}
+
+	//基本的格式化
+	public static void tformat(){
+		float doNumber = 12.0f;
+
+		DecimalFormat df = new DecimalFormat(FORMAT_FLOAT_STR);
+		String ret = df.format(doNumber);
+		System.out.println(ret);
+
+		Map<String, String> mapData = new HashMap<>();
+		if(mapData == null){
+			System.out.println("mapData is null");
+		}else{
+			System.out.println("mapData is not null");
+		}
+
+	}
+
 
 	public static void tobjectsort(){
 		ClassArray classArray = new ClassArray(100);
