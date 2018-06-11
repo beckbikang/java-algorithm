@@ -28,7 +28,7 @@ public class SimpleSort {
 		String ret = df.format(doNumber);
 		System.out.println(ret);
 
-		Map<String, String> mapData = new HashMap<>();
+		Map<String, String> mapData = new HashMap<String, String>();
 		if(mapData == null){
 			System.out.println("mapData is null");
 		}else{
